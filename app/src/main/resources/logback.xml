@@ -1,0 +1,53 @@
+<!-- Copyed setup, customize later -->
+<configuration>
+
+    <!-- ===== Pattern for all logs ===== -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger - %msg%n"/>
+
+    <!-- ===== Console ===== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ===== Fresh file each run: ./logs/nnma.log ===== -->
+    <appender name="RUN_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/nnma.log</file>
+        <append>false</append> <!-- overwrite each run -->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ===== Rolling history file: ./logs/nnma-history.log (rotate at 10MB) ===== -->
+    <appender name="HISTORY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/nnma-history.log</file>
+        <append>true</append>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <!-- rotated files become nnma-history.1.log, nnma-history.2.log, ... -->
+            <fileNamePattern>logs/nnma-history.%i.log</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>10</maxIndex> <!-- keep up to 10 old files -->
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>10MB</maxFileSize>
+        </triggeringPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ===== Root logger ===== -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="RUN_FILE"/>
+        <appender-ref ref="HISTORY_FILE"/>
+    </root>
+
+</configuration>
+
