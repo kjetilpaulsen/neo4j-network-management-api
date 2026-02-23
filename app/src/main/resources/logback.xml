@@ -1,0 +1,43 @@
+<configuration>
+
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger - %msg%n"/>
+
+    <!-- Read log dir from system property, fallback is just in case -->
+    <property name="NNMA_LOG_DIR" value="${NNMA_LOG_DIR:-./logs}" />
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder><pattern>${LOG_PATTERN}</pattern></encoder>
+    </appender>
+
+    <appender name="RUN_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${NNMA_LOG_DIR}/nnma.log</file>
+        <append>false</append>
+        <encoder><pattern>${LOG_PATTERN}</pattern></encoder>
+    </appender>
+
+    <appender name="HISTORY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${NNMA_LOG_DIR}/nnma-history.log</file>
+        <append>true</append>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${NNMA_LOG_DIR}/nnma-history.%i.log</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>10</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>10MB</maxFileSize>
+        </triggeringPolicy>
+
+        <encoder><pattern>${LOG_PATTERN}</pattern></encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="RUN_FILE"/>
+        <appender-ref ref="HISTORY_FILE"/>
+    </root>
+
+</configuration>
+
