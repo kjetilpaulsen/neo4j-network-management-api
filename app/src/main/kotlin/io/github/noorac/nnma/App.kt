@@ -4,12 +4,16 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
 
-private val logger = LoggerFactory.getLogger("io.github.noorac.nnma.Application")
+private 
 
 fun main() {
 
-    // Keep in mind this is relative path, must be ran from main directory
-    Files.createDirectories(Path.of("logs"))
-    logger.info("nnma starting up")
+    // Bootstrap Logging
+    Logging.init()
+    val logger = LoggerFactory.getLogger("io.github.noorac.nnma.Application")
+    logger.info("Logging bootstrap completed")
+
+    // Run rest of program
+
     println("Hello World!")
 }
