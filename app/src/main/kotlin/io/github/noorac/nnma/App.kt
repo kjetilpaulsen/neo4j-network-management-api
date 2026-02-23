@@ -4,8 +4,6 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
 
-private 
-
 fun main() {
 
     // Bootstrap Logging
