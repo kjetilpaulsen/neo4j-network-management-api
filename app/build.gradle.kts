@@ -26,6 +26,12 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+
+    // Logging
+    implementation("org.slf4j:slf4j-api:2.0.13")
+
+    runtimeOnly("ch.qos.logback:logback-classic:1.5.6")
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
