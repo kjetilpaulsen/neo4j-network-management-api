@@ -5,6 +5,9 @@
     <property name="LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger - %msg%n"/>
 
+    <!-- Read log dir from system property, fallback is just in case -->
+    <property name="NNMA_LOG_DIR" value="${NNMA_LOG_DIR:-./logs" />
+
     <!-- ===== Console ===== -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
