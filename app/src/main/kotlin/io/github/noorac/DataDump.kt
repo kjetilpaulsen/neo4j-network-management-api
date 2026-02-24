@@ -9,3 +9,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
+object DataDump {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    private val dumpUrl: URI = URI.create("https://raw.githubusercontent.com/neo4j-graph-examples/network-management/main/data/".plus(AppInfo.DUMP_ID))
+
+    fun ensurePresent(): Path {
+
+    }
+}
+
