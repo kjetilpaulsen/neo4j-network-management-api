@@ -23,7 +23,7 @@ object DataDump {
             return target
         }
         logger.warn("Dump missing, downloading from {}", dumpUrl)
-        val tmp: Path = Files.createTempFile(Xdg.dataDir, dumpFileName, ".part")
+        val tmp: Path = Files.createTempFile(Xdg.dataDir, AppInfo.DUMP_ID, ".part")
 
         try {
             val client = HttpClient.newBuilder()
@@ -37,9 +37,26 @@ object DataDump {
             val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
 
             if (response.statusCode() !in 200..299) {
-                throw IlleagalStateException("Download failed: HTTP ${response.statusCode()} from $dumpUrl")
+                throw IllegalStateException("Download failed: HTTP ${response.statusCode()} from $dumpUrl")
+            }
+            
+            response.body().use { input ->
+                Files.copy(input, tmp, StandardCopyOption.REPLACE_EXISTING)
             }
 
+            Files.move(
+                tmp,
+                target,
+                StandardCopyOption.REPLACE_EXISTING,
+                StandardCopyOption.ATOMIC_MOVE
+            )
+
+            logger.info("Dump downloaded to {}", target)
+            return target
+        } catch (e: Exception) {
+            runCatching { Files.deleteIfExists(tmp) }
+            logger.error("Failed to download dump", e)
+            throw e
         }
     }
 }

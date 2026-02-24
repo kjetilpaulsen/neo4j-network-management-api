@@ -12,7 +12,7 @@ fun main() {
     logger.info("Logging bootstrap completed")
 
     // Ensure we have the data
-    val dumpPath ? DataDump.ensurePresent()
+    val dumpPath = DataDump.ensurePresent()
     logger.info("Ready for data ingestion at {}", dumpPath)
 
     // Run rest of program
