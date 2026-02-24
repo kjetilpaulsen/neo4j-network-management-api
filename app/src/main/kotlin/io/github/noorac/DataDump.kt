@@ -15,7 +15,15 @@ object DataDump {
     private val dumpUrl: URI = URI.create("https://raw.githubusercontent.com/neo4j-graph-examples/network-management/main/data/".plus(AppInfo.DUMP_ID))
 
     fun ensurePresent(): Path {
+        Files.createDirectories(Xdg.dataDir)
 
+        val target: Path = Xdg.dataDir.resolve(AppInfo.DUMP_ID)
+        if (Files.exists(target)) {
+            logger.info("Dump target already exists: {}", target)
+            return target
+        }
+        logger.warn("Dump missing, downloading from {}", dumpUrl)
+        val tmp: Path = Files.createTempFile(Xdg.dataDir, dumpFileName, ".part")
     }
 }
 
