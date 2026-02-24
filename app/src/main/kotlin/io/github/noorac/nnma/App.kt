@@ -12,6 +12,7 @@ fun main() {
     logger.info("Logging bootstrap completed")
 
     // Ensure we have the data
+    val dumpPath = Xdg.dataDir.resolve(AppInfo.DUMP_ID)
 
     // Run rest of program
 
