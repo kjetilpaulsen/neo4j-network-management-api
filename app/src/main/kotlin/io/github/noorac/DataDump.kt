@@ -24,6 +24,23 @@ object DataDump {
         }
         logger.warn("Dump missing, downloading from {}", dumpUrl)
         val tmp: Path = Files.createTempFile(Xdg.dataDir, dumpFileName, ".part")
+
+        try {
+            val client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .build()
+
+            val request = HttpRequest.newBuilder(dumpUrl)
+                .GET()
+                .build()
+
+            val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
+
+            if (response.statusCode() !in 200..299) {
+                throw IlleagalStateException("Download failed: HTTP ${response.statusCode()} from $dumpUrl")
+            }
+
+        }
     }
 }
 
