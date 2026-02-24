@@ -12,9 +12,9 @@ fun main() {
     logger.info("Logging bootstrap completed")
 
     // Ensure we have the data
-    val dumpPath = Xdg.dataDir.resolve(AppInfo.DUMP_ID)
+    val dumpPath ? DataDump.ensurePresent()
+    logger.info("Ready for data ingestion at {}", dumpPath)
 
     // Run rest of program
-
-    println("Hello World!")
+    logger.info("Exiting without errors")
 }
