@@ -11,6 +11,8 @@ fun main() {
     val logger = LoggerFactory.getLogger("io.github.noorac.nnma.Application")
     logger.info("Logging bootstrap completed")
 
+    // Ensure we have the data
+
     // Run rest of program
 
     println("Hello World!")
