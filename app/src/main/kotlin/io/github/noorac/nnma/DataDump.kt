@@ -34,12 +34,22 @@ object HttpDownloader: Downloader {
 object DataDump {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    private val dumpUrl: URI = URI.create("https://raw.githubusercontent.com/neo4j-graph-examples/network-management/main/data/".plus(AppInfo.DUMP_ID))
+    private fun defaultDumpUrl(dumpId: String): URI=
+        URI.create("https://raw.githubusercontent.com/neo4j-graph-examples/network-management/main/data/$dumpId")
 
-    fun ensurePresent(): Path {
-        Files.createDirectories(Xdg.dataDir)
+    /**
+     * Ensures the dump exists in [dataDir]. Downloads if missing.
+     */
 
-        val target: Path = Xdg.dataDir.resolve(AppInfo.DUMP_ID)
+    fun ensurePresent(
+        dataDir: Path = Xdg.dataDir,
+        dumpId: String = AppInfo.DUMP_ID,
+        dumpUrl: URI = defaultDumpUrl(dumpId),
+        downloader: Downloader = HttpDownloader,
+    ): Path {
+        Files.createDirectories(dataDir)
+
+        val target = dataDir.resolve(dumpId)
         if (Files.exists(target)) {
             logger.info("Dump target already exists: {}", target)
             return target
