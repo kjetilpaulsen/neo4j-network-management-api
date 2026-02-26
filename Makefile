@@ -7,7 +7,7 @@ run:
 	./gradlew :app:run
 
 test:
-	./gradlew :app:test
+	./gradlew :app:test --rerun-tasks
 
 clean:
 	./gradlew clean
