@@ -50,22 +50,24 @@ object DataDump {
         Files.createDirectories(dataDir)
 
         val target = dataDir.resolve(dumpId)
+
+        // Check if exists and return if it does
         if (Files.exists(target)) {
             logger.info("Dump target already exists: {}", target)
             return target
         }
+
+        // If it doesn't exist download it
         logger.warn("Dump missing, downloading from {}", dumpUrl)
-        val tmp: Path = Files.createTempFile(Xdg.dataDir, AppInfo.DUMP_ID, ".part")
 
+        val tmp = dataDir.resolve("$dumpId.part")
         try {
-
-
-
-            if (response.statusCode() !in 200..299) {
-                throw IllegalStateException("Download failed: HTTP ${response.statusCode()} from $dumpUrl")
+            val resp = downloader.open(dumpUrl)
+            if (resp.statusCode !in 200..299) {
+                throw IllegalStateException("Download failed: HTTP ${resp.statusCode} from $dumpUrl")
             }
             
-            response.body().use { input ->
+            resp.body.use { input ->
                 Files.copy(input, tmp, StandardCopyOption.REPLACE_EXISTING)
             }
 
