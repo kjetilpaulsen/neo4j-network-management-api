@@ -14,6 +14,12 @@ fun interface Downloader {
     fun open(uri: URI) : DownloadResponse
 }
 
+data class DownloadResponse (
+    val statusCode: Int,
+    val body: InputStream,
+)
+
+
 
 object DataDump {
     private val logger = LoggerFactory.getLogger(javaClass)
