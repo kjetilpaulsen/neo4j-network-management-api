@@ -19,7 +19,17 @@ data class DownloadResponse (
     val body: InputStream,
 )
 
+object HttpDownloader: Downloader {
+    private val client = HttpClient.newBuilder()
+        .followRedirects(HttpClient.Redirect.NORMAL)
+        .build()
 
+    override fun open(uri: URI): DownloadResponse {
+        val request = HttpRequest.newBuilder(uri).GET().build()
+        val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
+        return DownloadResponse(response.statusCode(), response.body())
+    }
+}
 
 object DataDump {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -38,15 +48,8 @@ object DataDump {
         val tmp: Path = Files.createTempFile(Xdg.dataDir, AppInfo.DUMP_ID, ".part")
 
         try {
-            val client = HttpClient.newBuilder()
-                .followRedirects(HttpClient.Redirect.NORMAL)
-                .build()
 
-            val request = HttpRequest.newBuilder(dumpUrl)
-                .GET()
-                .build()
 
-            val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
 
             if (response.statusCode() !in 200..299) {
                 throw IllegalStateException("Download failed: HTTP ${response.statusCode()} from $dumpUrl")
