@@ -55,4 +55,25 @@ class DataDumpTest {
         assertEquals(dataDir.resolve("x.dump"), out)
         assertEquals("payload", Files.readString(out))
     }
+
+    @Test
+    fun `non-2xx throws and cleans part file`() {
+        val dataDir = tmp.resolve("data")
+
+        val downloader = Downloader {
+            DownloadResponse(404, ByteArrayInputStream(ByteArray(0)))
+        }
+        assertThrows(IllegalStateException::class.java) {
+            DataDump.ensurePresent(
+                dataDir = dataDir,
+                dumpId = "x.dump",
+                dumpUrl = URI.create("http://example.invalid/x.dump"),
+                downloader = downloader,
+            )
+        }
+
+        val part = dataDir.resolve("x.dump.part")
+        assertFalse(Files.exists(part))
+        assertFalse(Files.exists(dataDir.resolve("x.dump")))
+    }
 }
