@@ -37,4 +37,22 @@ class DataDumpTest {
         assertFalse(called)
         assertEquals("already-here", Files.readString(target))
     }
+
+    @Test
+    fun `downloads file when missing`() {
+        val dataDir = tmp.resolve("data")
+
+        val downloader = Downloader {
+            DownloadResponse(200, ByteArrayInputStream("payload".toByteArray()))
+        }
+
+        val out = DataDump.ensurePresent(
+            dataDir = dataDir,
+            dumpId = "x.dump",
+            dumpUrl = URI.create("http://example.invalid/x.dump"),
+            downloader = downloader,
+        )
+        assertEquals(dataDir.resolve("x.dump"), out)
+        assertEquals("payload", Files.readString(out))
+    }
 }
