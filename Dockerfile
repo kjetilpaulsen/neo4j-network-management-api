@@ -1,29 +1,28 @@
 # syntax=docker/dockerfile:1
 
-# ---------- Build stage ----------
 FROM gradle:8.7-jdk17 AS build
 WORKDIR /workspace
 
-# Copy only app build files first (better caching)
-COPY app/build.gradle.kts app/settings.gradle.kts* app/gradle.properties* ./
-COPY app/gradle ./gradle
-COPY app/gradlew ./gradlew
+# Gradle wrapper at repo root
+COPY gradlew ./
+COPY gradle ./gradle
 
-# Pre-fetch dependencies
-RUN ./gradlew --no-daemon dependencies || true
+# Root settings (must exist in this case)
+COPY settings.gradle.kts ./
 
-# Copy source
-COPY app/src ./src
+# App module
+COPY app/build.gradle.kts ./app/
+COPY app/src ./app/src
 
-# Build distribution
-RUN ./gradlew --no-daemon clean installDist
+# Build the app module (':app' must match your module name)
+RUN ./gradlew --no-daemon :app:clean :app:installDist
 
 
-# ---------- Runtime stage ----------
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-COPY --from=build /workspace/build/install /app
+# installDist output for module 'app'
+COPY --from=build /workspace/app/build/install /app
 
-# Replace "app" if your project name differs
+# Adjust if the generated folder isn't named 'app'
 CMD ["/app/app/bin/app"]
