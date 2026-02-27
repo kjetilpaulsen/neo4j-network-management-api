@@ -1,10 +1,9 @@
 .git
 .gradle
 build
-out
 data
 logs
+meta
 *.iml
 .idea
 .vscode
-.DS_Store
