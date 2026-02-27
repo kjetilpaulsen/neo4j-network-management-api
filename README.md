@@ -1,6 +1,28 @@
 # neo4j-network-management-api
-neo4j-network-management-api
-# Running the Project with Docker
+## Project Overview
+
+This project is a small learning-oriented application built to explore and experiment with **Neo4j** and graph databases.
+
+The primary purpose of the project is to:
+
+- Set up and run Neo4j using Docker
+- Download and work with Neo4j’s official example data dump (e.g. the *network-management* dataset)
+- Practice ingesting, querying, and interacting with graph data
+- Build familiarity with Kotlin as an application layer interacting with Neo4j
+- Establish a clean, reproducible Docker-based development workflow
+
+The project is not intended to be a production system. Instead, it serves as a structured sandbox for:
+
+- Understanding how graph databases differ from relational databases
+- Experimenting with nodes, relationships, labels, and Cypher queries
+- Learning how to containerize an application alongside a database
+- Developing clean project structure and reproducible environments
+
+All infrastructure is managed via Docker Compose, making it easy to clone the repository and run the project without manual database installation.
+
+This repository exists primarily as a learning exercise and a demonstration of working with Neo4j in a modern containerized setup.
+
+## Running the Project with Docker
 
 This project is designed to run with Docker Compose in just a few steps.
 
