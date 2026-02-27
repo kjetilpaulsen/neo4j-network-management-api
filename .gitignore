@@ -52,3 +52,12 @@ build
 
 # Ignore Kotlin plugin data
 .kotlin
+
+#ignore envs
+.env
+.venv
+
+#ignore data 
+data/xdg-share/
+data/xdg-state/
+
