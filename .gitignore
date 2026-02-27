@@ -56,3 +56,8 @@ build
 #ignore envs
 .env
 .venv
+
+#ignore data 
+data/xdg-share/
+data/xdg-state/
+

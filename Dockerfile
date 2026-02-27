@@ -21,8 +21,10 @@ RUN ./gradlew --no-daemon :app:clean :app:installDist
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
+
 # installDist output for module 'app'
 COPY --from=build /workspace/app/build/install /app
+
 
 # Adjust if the generated folder isn't named 'app'
 CMD ["/app/app/bin/app"]
