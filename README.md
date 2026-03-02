@@ -2,7 +2,7 @@
 ## Project Overview
 *This project is still in an early phase*
 
-This project is a small learning-oriented application built to explore and experiment with **Neo4j** and graph databases.
+This project is a small, learning-oriented application built to explore and experiment with **Neo4j** and graph databases.
 
 The primary purpose of the project is to:
 
